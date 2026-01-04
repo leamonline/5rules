@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+
+/* Calming Earth Tone Palette */
+:root {
+  /* Background colors */
+  --color-bg-cream: #faf7f2;
+  --color-bg-warm: #f5f0e8;
+  --color-bg-sage-light: #e8ede5;
+
+  /* Accent colors */
+  --color-sage: #9CAF88;
+  --color-sage-dark: #7a9166;
+  --color-terracotta: #C68B59;
+  --color-terracotta-light: #d4a574;
+  --color-clay: #D4B5A0;
+  --color-clay-light: #e5d3c4;
+  --color-stone: #8b8178;
+
+  /* Text colors */
+  --color-text-primary: #3d3831;
+  --color-text-secondary: #6b6258;
+  --color-text-muted: #9a9189;
+
+  /* Rule accent colors (muted earth tones) */
+  --color-rule-1: #7a8b7a;
+  /* Muted sage for Shadow */
+  --color-rule-2: #8b7a6b;
+  /* Warm stone for Unconscious */
+  --color-rule-3: #9a7a8a;
+  /* Dusty rose for Integration */
+  --color-rule-4: #6b8a7a;
+  /* Teal sage for Pattern */
+  --color-rule-5: #c69a6a;
+  /* Warm amber for Wholeness */
+}
+
+/* Global styles */
+html {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(165deg, var(--color-bg-cream) 0%, var(--color-bg-warm) 50%, var(--color-bg-sage-light) 100%);
+  color: var(--color-text-primary);
+}
+
+/* Heading typography */
+h1,
+h2,
+h3,
+.font-heading {
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-sage);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
+/* Animation utilities - slower for contemplative feel */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-soft {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes breathe {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes gentle-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+/* Custom scrollbar - earth tones */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-warm);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-clay);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-stone);
+}
+
+/* Utility classes for earth tone theme */
+.bg-earth-cream {
+  background-color: var(--color-bg-cream);
+}
+
+.bg-earth-warm {
+  background-color: var(--color-bg-warm);
+}
+
+.bg-earth-sage {
+  background-color: var(--color-sage);
+}
+
+.bg-earth-terracotta {
+  background-color: var(--color-terracotta);
+}
+
+.bg-earth-clay {
+  background-color: var(--color-clay);
+}
+
+.text-earth-primary {
+  color: var(--color-text-primary);
+}
+
+.text-earth-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-earth-muted {
+  color: var(--color-text-muted);
+}
+
+/* Card styles with soft shadows */
+.card-calm {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(156, 175, 136, 0.2);
+  box-shadow: 0 4px 20px rgba(139, 129, 120, 0.08);
+  border-radius: 16px;
+}
+
+/* Button transitions - slower and smoother */
+button,
+a {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Gentle hover states */
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 129, 120, 0.12);
+}
