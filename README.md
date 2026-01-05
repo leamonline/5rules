@@ -1,73 +1,52 @@
-# React + TypeScript + Vite
+# The 5 Rules Workbook
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The 5 Rules Workbook is a guided React app for working through five reflective exercises inspired by the book **The 5 Rules**. It walks you through each exercise with clear prompts, a calming breathing prelude, and automatic journey saving so you can pause and resume anytime.
 
-Currently, two official plugins are available:
+## What the app does
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Guided journey storage:** Your answers are saved locally as you type, and past journeys can be archived for reference. Progress automatically resumes where you left off.
+- **Five focused exercises:** Each rule has its own flow:
+  - Understanding what triggers you
+  - Tracing your reactions
+  - Embracing all of you
+  - Choosing your own values
+  - Separating facts from stories
+- **Breathing prelude:** Before starting an exercise, a short breathing practice helps you settle in; you can also skip it if you prefer.
+- **Summaries and exports:** Review a completed journey, spot recurring themes, and export reflections as text.
+- **Onboarding and resets:** A brief onboarding explains the flow, and you can reset or start a fresh journey at any time.
 
-## React Compiler
+## Running the app
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
+- Node.js 18+ recommended
+- npm (included with Node)
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Setup
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Start the dev server
+Launch Vite with hot reloading:
+```bash
+npm run dev
+```
+Open the printed local URL in your browser.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Build for production
+Create an optimized build:
+```bash
+npm run build
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Preview the build
+Serve the production build locally:
+```bash
+npm run preview
+```
+
+### Lint (optional)
+Run ESLint checks:
+```bash
+npm run lint
 ```
