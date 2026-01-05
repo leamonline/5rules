@@ -10,18 +10,10 @@ import {
 } from '../services/storage';
 
 export function useJourney() {
-    const [journey, setJourney] = useState<Journey | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    // Use lazy initialization to load journey synchronously on first render
+    const [journey, setJourney] = useState<Journey | null>(() => loadCurrentJourney());
+    const [isLoading] = useState(false); // No async loading needed with lazy init
     const saveTimeoutRef = useRef<number | null>(null);
-
-    // Load journey on mount
-    useEffect(() => {
-        const savedJourney = loadCurrentJourney();
-        if (savedJourney) {
-            setJourney(savedJourney);
-        }
-        setIsLoading(false);
-    }, []);
 
     // Debounced save
     const debouncedSave = useCallback((journeyToSave: Journey) => {

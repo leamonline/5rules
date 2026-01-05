@@ -15,7 +15,7 @@ const slides = [
         subtitle: 'A space for gentle self-discovery',
         content: (
             <div className="text-center space-y-4">
-                <div className="w-20 h-20 rounded-full bg-[var(--color-sage)]/20 flex items-center justify-center mx-auto mb-6">
+                <div className="w-20 h-20 organic-shape-1 bg-[var(--color-sage)]/20 flex items-center justify-center mx-auto mb-6">
                     <Leaf size={40} className="text-[var(--color-sage-dark)]" />
                 </div>
                 <p className="text-[var(--color-text-secondary)] leading-relaxed">
@@ -34,31 +34,31 @@ const slides = [
         subtitle: 'Simple, at your own pace',
         content: (
             <div className="space-y-4 text-left">
-                <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/50 border border-[var(--color-clay-light)]">
-                    <div className="p-2 rounded-xl bg-[var(--color-sage)]/20 text-[var(--color-sage-dark)]">
-                        <Sparkles size={20} />
+                <div className="flex items-start gap-4 p-5 organic-shape-4 glass-panel border border-[var(--color-clay)]/30">
+                    <div className="p-2.5 organic-pill bg-[var(--color-sage)]/10 text-[var(--color-sage)]">
+                        <Sparkles size={22} />
                     </div>
                     <div>
-                        <p className="font-medium text-[var(--color-text-primary)]">Choose or Write</p>
-                        <p className="text-sm text-[var(--color-text-secondary)]">Pick from prompts or express yourself freely</p>
+                        <p className="font-heading text-lg text-[var(--color-text-primary)]">Choose or Write</p>
+                        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">Pick from prompts or express yourself freely</p>
                     </div>
                 </div>
-                <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/50 border border-[var(--color-clay-light)]">
-                    <div className="p-2 rounded-xl bg-[var(--color-terracotta)]/20 text-[var(--color-terracotta)]">
-                        <Heart size={20} />
+                <div className="flex items-start gap-4 p-5 organic-shape-1 glass-panel border border-[var(--color-clay)]/30">
+                    <div className="p-2.5 organic-pill bg-[var(--color-clay)]/20 text-[var(--color-clay)]">
+                        <Heart size={22} />
                     </div>
                     <div>
-                        <p className="font-medium text-[var(--color-text-primary)]">Take Your Time</p>
-                        <p className="text-sm text-[var(--color-text-secondary)]">Everything saves automatically</p>
+                        <p className="font-heading text-lg text-[var(--color-text-primary)]">Take Your Time</p>
+                        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">Everything saves automatically</p>
                     </div>
                 </div>
-                <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/50 border border-[var(--color-clay-light)]">
-                    <div className="p-2 rounded-xl bg-[var(--color-sage)]/20 text-[var(--color-sage-dark)]">
-                        <Eye size={20} />
+                <div className="flex items-start gap-4 p-5 organic-shape-2 glass-panel border border-[var(--color-clay)]/30">
+                    <div className="p-2.5 organic-pill bg-[var(--color-sage)]/10 text-[var(--color-sage)]">
+                        <Eye size={22} />
                     </div>
                     <div>
-                        <p className="font-medium text-[var(--color-text-primary)]">Reflect & Revisit</p>
-                        <p className="text-sm text-[var(--color-text-secondary)]">Come back to your insights anytime</p>
+                        <p className="font-heading text-lg text-[var(--color-text-primary)]">Reflect & Revisit</p>
+                        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">Come back to your insights anytime</p>
                     </div>
                 </div>
             </div>
@@ -76,12 +76,12 @@ const slides = [
                     return (
                         <div
                             key={rule.id}
-                            className={`flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r ${rule.color} text-white`}
+                            className={`flex items-center gap-4 p-4 organic-shape-${(rule.id % 4) + 1} bg-gradient-to-r ${rule.color} text-white shadow-md`}
                         >
-                            <Icon size={20} />
+                            <Icon size={22} />
                             <div>
-                                <p className="text-xs text-white/70">Exercise {rule.id}</p>
-                                <p className="text-sm font-medium">{rule.title}</p>
+                                <p className="text-xs text-white/70 uppercase tracking-widest">Exercise {rule.id}</p>
+                                <p className="text-base font-heading">{rule.title}</p>
                             </div>
                         </div>
                     );
@@ -95,7 +95,7 @@ const slides = [
         subtitle: 'Your journey of self-understanding begins here',
         content: (
             <div className="text-center space-y-6">
-                <div className="w-20 h-20 rounded-full bg-[var(--color-terracotta)]/20 flex items-center justify-center mx-auto animate-breathe">
+                <div className="w-20 h-20 organic-shape-1 bg-[var(--color-terracotta)]/20 flex items-center justify-center mx-auto animate-breathe">
                     <Heart size={36} className="text-[var(--color-terracotta)]" />
                 </div>
                 <p className="text-[var(--color-text-secondary)] leading-relaxed">
@@ -156,23 +156,23 @@ export function OnboardingScreen({ onComplete, onSkip }: OnboardingScreenProps) 
                 <div className="space-y-6">
                     <OnboardingDots current={currentSlide} total={slides.length} />
 
-                    <div className="flex gap-3">
+                    <div className="flex gap-4">
                         {currentSlide > 0 && (
                             <button
                                 onClick={prevSlide}
-                                className="flex-1 py-4 rounded-2xl bg-white/70 border border-[var(--color-clay-light)] text-[var(--color-text-primary)] hover:bg-white transition-all font-medium"
+                                className="flex-1 py-4 organic-pill bg-white/50 border border-[var(--color-clay)]/50 text-[var(--color-text-primary)] hover:bg-white transition-all font-medium shadow-sm hover:shadow-md"
                             >
                                 Back
                             </button>
                         )}
                         <button
                             onClick={nextSlide}
-                            className={`flex-1 py-4 rounded-2xl transition-all font-medium flex items-center justify-center gap-2 ${isLastSlide
+                            className={`flex-1 py-4 organic-pill transition-all font-medium flex items-center justify-center gap-2 shadow-lg hover:shadow-xl ${isLastSlide
                                 ? 'bg-[var(--color-sage)] text-white hover:bg-[var(--color-sage-dark)]'
-                                : 'bg-white/70 border border-[var(--color-clay-light)] text-[var(--color-text-primary)] hover:bg-white'
+                                : 'glass-panel border-transparent text-[var(--color-text-primary)] hover:bg-white'
                                 }`}
                         >
-                            {isLastSlide ? 'Begin' : 'Next'}
+                            {isLastSlide ? 'Begin Your Journey' : 'Next'}
                             <ChevronRight size={18} />
                         </button>
                     </div>

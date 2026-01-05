@@ -28,16 +28,16 @@ export function RuleHeader({ rule, onBack }: RuleHeaderProps) {
                 <ChevronLeft size={18} aria-hidden="true" />
                 All Exercises
             </button>
-            <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-center gap-5 mb-6">
                 <div
-                    className={`p-3 rounded-2xl bg-gradient-to-br ${rule.color} text-white shadow-md`}
+                    className={`p-4 organic-shape-2 bg-gradient-to-br ${rule.color} text-white shadow-lg`}
                     aria-hidden="true"
                 >
-                    {Icon && <Icon size={28} />}
+                    {Icon && <Icon size={32} />}
                 </div>
                 <div>
-                    <div className="text-xs text-[var(--color-text-muted)]">Exercise {rule.id}</div>
-                    <h1 className="text-xl md:text-2xl font-heading text-[var(--color-text-primary)]">{rule.title}</h1>
+                    <div className="text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Exercise {rule.id}</div>
+                    <h1 className="text-2xl md:text-3xl font-heading text-[var(--color-text-primary)]">{rule.title}</h1>
                 </div>
             </div>
             <p className="text-[var(--color-text-secondary)] leading-relaxed">

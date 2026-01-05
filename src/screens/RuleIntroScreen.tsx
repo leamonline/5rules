@@ -19,8 +19,8 @@ export function RuleIntroScreen({ rule, onBegin, onBack }: RuleIntroScreenProps)
             <div className="flex-1 flex flex-col justify-center max-w-lg mx-auto w-full">
                 <div className="animate-fade-in">
                     {/* Icon */}
-                    <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${rule.color} flex items-center justify-center mx-auto mb-8 text-white shadow-lg`}>
-                        {Icon && <Icon size={40} />}
+                    <div className={`w-24 h-24 organic-shape-4 bg-gradient-to-br ${rule.color} flex items-center justify-center mx-auto mb-8 text-white shadow-xl shadow-[var(--color-sage)]/10`}>
+                        {Icon && <Icon size={48} />}
                     </div>
 
                     {/* Title */}
@@ -45,12 +45,12 @@ export function RuleIntroScreen({ rule, onBegin, onBack }: RuleIntroScreenProps)
                             {rule.introduction.map((point, i) => (
                                 <li
                                     key={i}
-                                    className="flex items-start gap-4 p-4 rounded-2xl bg-white/60 border border-[var(--color-clay-light)] text-[var(--color-text-secondary)] animate-fade-in"
+                                    className="flex items-start gap-4 p-5 organic-shape-1 glass-panel border-[var(--color-bg-stone)]/50 text-[var(--color-text-primary)] animate-fade-in"
                                 >
-                                    <span className={`w-7 h-7 rounded-full bg-gradient-to-br ${rule.color} flex items-center justify-center flex-shrink-0 text-xs text-white font-medium`}>
+                                    <span className={`w-8 h-8 organic-pill bg-gradient-to-br ${rule.color} flex items-center justify-center flex-shrink-0 text-sm text-white font-medium shadow-sm`}>
                                         {i + 1}
                                     </span>
-                                    <span className="leading-relaxed text-sm">{point}</span>
+                                    <span className="leading-relaxed text-base opacity-90">{point}</span>
                                 </li>
                             ))}
                         </ul>
@@ -58,9 +58,9 @@ export function RuleIntroScreen({ rule, onBegin, onBack }: RuleIntroScreenProps)
 
                     {/* Explanation tip */}
                     {rule.explanation && (
-                        <div className="flex items-start gap-3 p-4 rounded-2xl bg-[var(--color-sage)]/10 border border-[var(--color-sage)]/20 mb-8 animate-fade-in">
-                            <Lightbulb size={20} className="text-[var(--color-sage-dark)] flex-shrink-0 mt-0.5" />
-                            <p className="text-sm text-[var(--color-sage-dark)] leading-relaxed">
+                        <div className="flex items-start gap-4 p-5 organic-shape-3 bg-[var(--color-sage)]/10 border border-[var(--color-sage)]/20 mb-10 animate-fade-in">
+                            <Lightbulb size={24} className="text-[var(--color-sage)] flex-shrink-0 mt-0.5" />
+                            <p className="text-sm text-[var(--color-sage-dark)] leading-relaxed font-medium">
                                 {rule.explanation}
                             </p>
                         </div>
@@ -68,19 +68,19 @@ export function RuleIntroScreen({ rule, onBegin, onBack }: RuleIntroScreenProps)
                 </div>
 
                 {/* Buttons */}
-                <div className="flex gap-3 animate-fade-in">
+                <div className="flex gap-4 animate-fade-in">
                     <button
                         onClick={onBack}
-                        className="flex-1 py-4 rounded-2xl bg-white/70 border border-[var(--color-clay-light)] text-[var(--color-text-primary)] hover:bg-white transition-all font-medium"
+                        className="flex-1 py-4 organic-pill bg-white/50 border border-[var(--color-clay)]/30 text-[var(--color-text-primary)] hover:bg-white transition-all font-medium shadow-sm"
                     >
                         Back
                     </button>
                     <button
                         onClick={onBegin}
-                        className={`flex-1 py-4 rounded-2xl bg-gradient-to-r ${rule.color} text-white hover:opacity-95 hover:shadow-lg transition-all font-medium flex items-center justify-center gap-2`}
+                        className={`flex-1 py-4 organic-pill bg-gradient-to-r ${rule.color} text-white hover:opacity-95 hover:shadow-xl transition-all font-medium flex items-center justify-center gap-2 shadow-lg`}
                     >
                         Begin
-                        <ChevronRight size={18} />
+                        <ChevronRight size={20} />
                     </button>
                 </div>
             </div>

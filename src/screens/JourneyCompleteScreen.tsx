@@ -30,18 +30,18 @@ export function JourneyCompleteScreen({ journey, onViewSummary, onStartNew, onGo
             : `${durationDays} days`;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-6">
-            <div className="max-w-md mx-auto flex flex-col min-h-[calc(100vh-3rem)] justify-center">
+        <div className="min-h-screen p-6 md:p-8">
+            <div className="max-w-md mx-auto flex flex-col min-h-[calc(100vh-6rem)] justify-center">
                 {/* Celebration */}
-                <div className="text-center mb-8 animate-fade-in">
-                    <div className="text-6xl mb-4">🎉</div>
-                    <h1 className="text-2xl font-light mb-2">Journey Complete!</h1>
-                    <p className="text-white/60 text-sm mb-4">
+                <div className="text-center mb-10 animate-fade-in">
+                    <div className="text-6xl mb-6 animate-float">🎉</div>
+                    <h1 className="text-3xl font-heading text-[var(--color-sage-dark)] mb-3">Journey Complete!</h1>
+                    <p className="text-[var(--color-text-secondary)] text-base mb-6">
                         You've completed all 5 rules
                     </p>
-                    <div className="flex items-center justify-center gap-4 text-xs text-white/40">
+                    <div className="flex items-center justify-center gap-4 text-xs text-[var(--color-text-muted)] uppercase tracking-widest">
                         <span className="flex items-center gap-1">
-                            <Clock size={12} />
+                            <Clock size={14} />
                             {completedDate}
                         </span>
                         <span>•</span>
@@ -50,18 +50,18 @@ export function JourneyCompleteScreen({ journey, onViewSummary, onStartNew, onGo
                 </div>
 
                 {/* Synthesis Section */}
-                <div className="space-y-4 mb-8">
+                <div className="space-y-6 mb-10">
                     {/* Themes Identified */}
-                    <div className="p-4 rounded-xl bg-white/5 animate-fade-in" style={{ animationDelay: '100ms' }}>
-                        <h2 className="text-sm font-medium text-white/70 mb-3 flex items-center gap-2">
-                            <Sparkles size={16} className="text-amber-400" />
+                    <div className="p-6 organic-shape-4 glass-panel animate-fade-in" style={{ animationDelay: '100ms' }}>
+                        <h2 className="text-sm font-medium text-[var(--color-text-primary)] mb-4 flex items-center gap-2">
+                            <Sparkles size={18} className="text-[var(--color-clay)]" />
                             Themes in Your Journey
                         </h2>
                         <div className="flex flex-wrap gap-2">
                             {themes.map((theme, i) => (
                                 <span
                                     key={i}
-                                    className="px-3 py-1 rounded-full text-sm bg-gradient-to-r from-indigo-500/20 to-violet-500/20 border border-indigo-400/30"
+                                    className="px-4 py-1.5 organic-pill text-sm bg-[var(--color-sage)]/10 text-[var(--color-sage-dark)] border border-[var(--color-sage)]/20"
                                 >
                                     {theme}
                                 </span>
@@ -71,51 +71,51 @@ export function JourneyCompleteScreen({ journey, onViewSummary, onStartNew, onGo
 
                     {/* Integration Statement */}
                     {journey.responses.rule3.integration && (
-                        <div className="p-4 rounded-xl bg-gradient-to-r from-violet-600/20 to-indigo-600/20 border border-violet-400/20 animate-fade-in" style={{ animationDelay: '200ms' }}>
-                            <h2 className="text-sm font-medium text-white/70 mb-2">Your Integration Statement</h2>
-                            <p className="text-violet-200 italic">"{journey.responses.rule3.integration}"</p>
+                        <div className="p-6 organic-shape-1 bg-gradient-to-br from-indigo-50/50 to-violet-50/50 border border-indigo-100 animate-fade-in shadow-sm" style={{ animationDelay: '200ms' }}>
+                            <h2 className="text-sm font-medium text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">Your Integration Statement</h2>
+                            <p className="text-[var(--color-sage-dark)] font-heading text-lg italic leading-relaxed">"{journey.responses.rule3.integration}"</p>
                         </div>
                     )}
 
                     {/* What's Next */}
-                    <div className="p-4 rounded-xl bg-white/5 animate-fade-in" style={{ animationDelay: '300ms' }}>
-                        <h2 className="text-sm font-medium text-white/70 mb-3">What's Next?</h2>
-                        <ul className="space-y-2 text-sm text-white/60">
-                            <li className="flex items-start gap-2">
-                                <span className="text-emerald-400">•</span>
-                                <span>Revisit these reflections in a week to see how your perspective has shifted</span>
+                    <div className="p-6 organic-shape-3 glass-panel animate-fade-in" style={{ animationDelay: '300ms' }}>
+                        <h2 className="text-sm font-medium text-[var(--color-text-primary)] mb-4">What's Next?</h2>
+                        <ul className="space-y-3 text-sm text-[var(--color-text-secondary)]">
+                            <li className="flex items-start gap-3">
+                                <span className="text-[var(--color-sage)] mt-1">•</span>
+                                <span className="leading-relaxed">Revisit these reflections in a week to see how your perspective has shifted</span>
                             </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-emerald-400">•</span>
-                                <span>Practice noticing when shadow triggers arise in daily life</span>
+                            <li className="flex items-start gap-3">
+                                <span className="text-[var(--color-sage)] mt-1">•</span>
+                                <span className="leading-relaxed">Practice noticing when shadow triggers arise in daily life</span>
                             </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-emerald-400">•</span>
-                                <span>Start a new journey when you're ready to explore different aspects</span>
+                            <li className="flex items-start gap-3">
+                                <span className="text-[var(--color-sage)] mt-1">•</span>
+                                <span className="leading-relaxed">Start a new journey when you're ready to explore different aspects</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 {/* Actions */}
-                <div className="space-y-3 animate-fade-in" style={{ animationDelay: '400ms' }}>
+                <div className="space-y-4 animate-fade-in" style={{ animationDelay: '400ms' }}>
                     <button
                         onClick={onViewSummary}
-                        className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 transition-all font-medium flex items-center justify-center gap-2"
+                        className="w-full py-4 organic-pill bg-[var(--color-sage)] text-white hover:bg-[var(--color-sage-dark)] transition-all font-medium flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                     >
-                        <BookOpen size={18} />
+                        <BookOpen size={20} />
                         View Full Summary
                     </button>
                     <button
                         onClick={onStartNew}
-                        className="w-full py-3 rounded-xl bg-white/10 hover:bg-white/20 transition-colors font-medium flex items-center justify-center gap-2"
+                        className="w-full py-4 organic-pill bg-white/50 border border-[var(--color-clay)]/30 hover:bg-white text-[var(--color-text-primary)] transition-all font-medium flex items-center justify-center gap-2 shadow-sm"
                     >
-                        <RefreshCw size={18} />
+                        <RefreshCw size={20} />
                         Start New Journey
                     </button>
                     <button
                         onClick={onGoHome}
-                        className="w-full py-2 text-sm text-white/50 hover:text-white/70 transition-colors"
+                        className="w-full py-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
                     >
                         Return to Overview
                     </button>

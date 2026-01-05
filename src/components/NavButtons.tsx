@@ -21,22 +21,22 @@ export function NavButtons({
         <nav className="flex justify-between mt-10 pt-6 border-t border-[var(--color-clay-light)] no-print" aria-label="Navigation">
             <button
                 onClick={onBack}
-                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white/70 border border-[var(--color-clay-light)] text-[var(--color-text-primary)] hover:bg-white transition-all min-h-[48px] focus:ring-2 focus:ring-[var(--color-sage)]"
+                className="flex items-center gap-2 px-6 py-3 organic-pill bg-white/50 border border-[var(--color-clay)]/30 text-[var(--color-text-primary)] hover:bg-white transition-all min-h-[48px] focus:ring-2 focus:ring-[var(--color-sage)] shadow-sm"
                 aria-label={backLabel}
             >
-                <ChevronLeft size={18} aria-hidden="true" />
+                <ChevronLeft size={20} aria-hidden="true" />
                 {backLabel}
             </button>
             <button
                 onClick={onNext}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all font-medium min-h-[48px] focus:ring-2 focus:ring-[var(--color-sage)] ${canComplete
-                    ? 'bg-[var(--color-sage)] text-white hover:bg-[var(--color-sage-dark)] shadow-md'
-                    : 'bg-white/70 border border-[var(--color-clay-light)] text-[var(--color-text-primary)] hover:bg-white'
+                className={`flex items-center gap-2 px-8 py-3 organic-pill transition-all font-medium min-h-[48px] focus:ring-2 focus:ring-[var(--color-sage)] ${canComplete
+                    ? 'bg-[var(--color-sage)] text-white hover:bg-[var(--color-sage-dark)] shadow-lg hover:shadow-xl'
+                    : 'bg-white/50 border border-[var(--color-clay)]/30 text-[var(--color-text-muted)] hover:bg-white hover:text-[var(--color-text-primary)]'
                     }`}
                 aria-label={buttonText}
             >
                 {buttonText}
-                <ChevronRight size={18} aria-hidden="true" />
+                <ChevronRight size={20} aria-hidden="true" />
             </button>
         </nav>
     );

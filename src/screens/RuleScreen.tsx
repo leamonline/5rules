@@ -157,7 +157,7 @@ export function RuleScreen({ ruleId, journey, onUpdateResponse, onComplete, onBa
                     <>
                         <div className="space-y-4">
                             {[0, 1, 2, 3, 4].map(i => (
-                                <div key={i} className="p-5 rounded-2xl bg-white/60 border border-[var(--color-clay-light)] space-y-4 animate-fade-in">
+                                <div key={i} className={`p-5 organic-shape-${(i % 4) + 1} bg-white/60 border border-[var(--color-clay-light)] space-y-4 animate-fade-in`}>
                                     <ButtonSelect
                                         options={presets.rule4.values.filter(v => !responses.rule4.values.includes(v) || responses.rule4.values[i] === v)}
                                         value={responses.rule4.values[i]}
@@ -170,7 +170,7 @@ export function RuleScreen({ ruleId, journey, onUpdateResponse, onComplete, onBa
                                             <select
                                                 value={responses.rule4.sources[i]}
                                                 onChange={(e) => onUpdateResponse('rule4', 'sources', e.target.value, i)}
-                                                className="flex-1 p-3 rounded-xl bg-white border border-[var(--color-clay-light)] text-[var(--color-text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-sage)] min-h-[48px]"
+                                                className="flex-1 p-3 organic-pill bg-white border border-[var(--color-clay-light)] text-[var(--color-text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-sage)] min-h-[48px]"
                                                 aria-label={`Who gave you the value "${responses.rule4.values[i]}"?`}
                                             >
                                                 <option value="">Who gave you this?</option>
@@ -184,7 +184,7 @@ export function RuleScreen({ ruleId, journey, onUpdateResponse, onComplete, onBa
                                             <select
                                                 value={responses.rule4.decisions[i]}
                                                 onChange={(e) => onUpdateResponse('rule4', 'decisions', e.target.value, i)}
-                                                className="flex-1 p-3 rounded-xl bg-white border border-[var(--color-clay-light)] text-[var(--color-text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-sage)] min-h-[48px]"
+                                                className="flex-1 p-3 organic-pill bg-white border border-[var(--color-clay-light)] text-[var(--color-text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-sage)] min-h-[48px]"
                                                 aria-label={`Your decision about "${responses.rule4.values[i]}"`}
                                             >
                                                 <option value="">Your decision?</option>

@@ -11,16 +11,16 @@ export function QuestionBlock({ number, label, hint, children }: QuestionBlockPr
     const id = `question-${number}`;
 
     return (
-        <div className="p-5 rounded-2xl bg-white/60 border border-[var(--color-clay-light)] animate-fade-in" role="group" aria-labelledby={id}>
-            <label id={id} className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
+        <div className="p-6 organic-shape-4 glass-panel border border-[var(--color-clay)]/30 animate-fade-in space-y-3" role="group" aria-labelledby={id}>
+            <label id={id} className="block font-heading text-lg text-[var(--color-text-primary)]">
                 {number}. {label}
             </label>
             {hint && (
-                <p className="text-xs text-[var(--color-text-muted)] mb-4" id={`${id}-hint`}>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed" id={`${id}-hint`}>
                     {hint}
                 </p>
             )}
-            <div aria-describedby={hint ? `${id}-hint` : undefined}>
+            <div aria-describedby={hint ? `${id}-hint` : undefined} className="pt-2">
                 {children}
             </div>
         </div>

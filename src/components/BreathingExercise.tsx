@@ -11,21 +11,21 @@ export function BreathingExercise({ onComplete, onSkip }: BreathingExerciseProps
     const [secondsLeft, setSecondsLeft] = useState(4);
     const totalCycles = 2;
 
-    const getPhaseText = () => {
+    const getPhaseText = useCallback(() => {
         switch (phase) {
             case 'inhale': return 'Breathe in...';
             case 'hold': return 'Hold...';
             case 'exhale': return 'Breathe out...';
         }
-    };
+    }, [phase]);
 
-    const getPhaseSeconds = () => {
+    const getPhaseSeconds = useCallback(() => {
         switch (phase) {
             case 'inhale': return 4;
             case 'hold': return 4;
             case 'exhale': return 6;
         }
-    };
+    }, [phase]);
 
     const advancePhase = useCallback(() => {
         if (phase === 'inhale') {
@@ -58,9 +58,10 @@ export function BreathingExercise({ onComplete, onSkip }: BreathingExerciseProps
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [advancePhase]);
+    }, [advancePhase, getPhaseSeconds]);
 
     const circleScale = phase === 'inhale' ? 'scale-110' : phase === 'exhale' ? 'scale-90' : 'scale-100';
+    const circleShape = phase === 'inhale' ? 'organic-shape-1' : phase === 'exhale' ? 'organic-shape-3' : 'organic-shape-2';
 
     return (
         <div className="min-h-screen p-6 flex flex-col items-center justify-center">
@@ -79,12 +80,12 @@ export function BreathingExercise({ onComplete, onSkip }: BreathingExerciseProps
                 <div className="relative mb-12">
                     {/* Outer glow */}
                     <div
-                        className={`absolute inset-0 w-48 h-48 mx-auto rounded-full bg-[var(--color-sage)]/20 blur-xl transition-all duration-[4000ms] ease-in-out ${circleScale}`}
+                        className={`absolute inset-0 w-48 h-48 mx-auto ${circleShape} bg-[var(--color-sage)]/20 blur-xl transition-all duration-[4000ms] ease-in-out ${circleScale}`}
                     />
 
                     {/* Main circle */}
                     <div
-                        className={`relative w-48 h-48 mx-auto rounded-full bg-gradient-to-br from-[var(--color-sage)] to-[var(--color-sage-dark)] flex items-center justify-center transition-all duration-[4000ms] ease-in-out shadow-lg ${circleScale}`}
+                        className={`relative w-48 h-48 mx-auto ${circleShape} bg-gradient-to-br from-[var(--color-sage)] to-[var(--color-sage-dark)] flex items-center justify-center transition-all duration-[4000ms] ease-in-out shadow-lg ${circleScale}`}
                     >
                         <div className="text-center text-white">
                             <p className="text-lg font-medium mb-1">{getPhaseText()}</p>
@@ -98,7 +99,7 @@ export function BreathingExercise({ onComplete, onSkip }: BreathingExerciseProps
                     {Array.from({ length: totalCycles }).map((_, i) => (
                         <div
                             key={i}
-                            className={`w-2 h-2 rounded-full transition-all ${i < cycle ? 'bg-[var(--color-sage)]' : i === cycle ? 'bg-[var(--color-sage)]/50' : 'bg-[var(--color-clay)]'}`}
+                            className={`w-2.5 h-2.5 transition-all ${i < cycle ? 'bg-[var(--color-sage)] organic-shape-1' : i === cycle ? 'bg-[var(--color-sage)]/50 organic-shape-4 animate-pulse' : 'bg-[var(--color-clay)] organic-shape-2'}`}
                         />
                     ))}
                 </div>
@@ -106,7 +107,7 @@ export function BreathingExercise({ onComplete, onSkip }: BreathingExerciseProps
                 {/* Skip button */}
                 <button
                     onClick={onSkip}
-                    className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors py-2 px-6"
+                    className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors py-2 px-6 organic-pill border border-[var(--color-clay)]/30 bg-white/30"
                 >
                     Skip & continue
                 </button>

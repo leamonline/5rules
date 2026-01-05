@@ -1,40 +1,55 @@
 @import "tailwindcss";
 
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
-/* Calming Earth Tone Palette */
+/* Nature-Inspired "Forest & Stone" Palette */
 :root {
   /* Background colors */
-  --color-bg-cream: #faf7f2;
-  --color-bg-warm: #f5f0e8;
-  --color-bg-sage-light: #e8ede5;
+  --color-bg-cream: #FDFCF8;
+  --color-bg-sand: #F2EFE9;
+  --color-bg-stone: #E6E2DD;
 
-  /* Accent colors */
-  --color-sage: #9CAF88;
-  --color-sage-dark: #7a9166;
-  --color-terracotta: #C68B59;
-  --color-terracotta-light: #d4a574;
-  --color-clay: #D4B5A0;
-  --color-clay-light: #e5d3c4;
-  --color-stone: #8b8178;
+  /* Primary Brand Colors */
+  --color-sage: #4A6761;
+  /* Deep Sage - Grounding */
+  --color-sage-dark: #2F423E;
+  /* Dark Forest */
+  --color-sage-light: #8DA399;
+  /* Mist */
+
+  /* Accent Colors */
+  --color-clay: #E0AFA0;
+  /* Soft Coral/Clay - Warmth */
+  --color-indigo-muted: #9DA9D6;
+  /* Serenity */
+  --color-gold-muted: #D4C5A0;
+  /* Sunlight */
 
   /* Text colors */
-  --color-text-primary: #3d3831;
-  --color-text-secondary: #6b6258;
-  --color-text-muted: #9a9189;
+  --color-text-primary: #2C3333;
+  /* Soft Black */
+  --color-text-secondary: #5C6666;
+  /* Stone Gray */
+  --color-text-muted: #8E9999;
+  /* Mist Gray */
 
-  /* Rule accent colors (muted earth tones) */
-  --color-rule-1: #7a8b7a;
-  /* Muted sage for Shadow */
-  --color-rule-2: #8b7a6b;
-  /* Warm stone for Unconscious */
-  --color-rule-3: #9a7a8a;
-  /* Dusty rose for Integration */
-  --color-rule-4: #6b8a7a;
-  /* Teal sage for Pattern */
-  --color-rule-5: #c69a6a;
-  /* Warm amber for Wholeness */
+  /* Rule accent colors (Organic tones) */
+  --color-rule-1: #4A6761;
+  /* Sage */
+  --color-rule-2: #8F7E7E;
+  /* Mauve Earth */
+  --color-rule-3: #6B7C8F;
+  /* Slate Blue */
+  --color-rule-4: #8F9E82;
+  /* Olive */
+  --color-rule-5: #C49F7B;
+  /* Sandstone */
+
+  /* UI Tokens */
+  --radius-lg: 32px;
+  --radius-md: 24px;
+  --radius-sm: 12px;
 }
 
 /* Global styles */
@@ -47,211 +62,160 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(165deg, var(--color-bg-cream) 0%, var(--color-bg-warm) 50%, var(--color-bg-sage-light) 100%);
+  /* Complex organic gradient mesh */
+  background:
+    radial-gradient(at 0% 0%, rgba(224, 175, 160, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(157, 169, 214, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(74, 103, 97, 0.10) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(212, 197, 160, 0.15) 0px, transparent 50%),
+    linear-gradient(180deg, var(--color-bg-cream) 0%, var(--color-bg-sand) 100%);
+  background-attachment: fixed;
   color: var(--color-text-primary);
 }
 
-/* Heading typography */
+/* Typography Overrides */
 h1,
 h2,
 h3,
 .font-heading {
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'Playfair Display', Georgia, serif;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
 
-/* Focus styles for accessibility */
-*:focus-visible {
-  outline: 2px solid var(--color-sage);
-  outline-offset: 2px;
+/* Glassmorphism Utilities */
+/* Glassmorphism Utilities */
+/* Organic Shape Utilities */
+.organic-shape-1 {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
 }
 
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+.organic-shape-2 {
+  border-radius: 30% 70% 70% 30% / 50% 40% 60% 50%;
 }
 
-/* Print styles */
-@media print {
-  body {
-    background: white !important;
-    color: black !important;
-  }
-
-  .no-print {
-    display: none !important;
-  }
-
-  .print-only {
-    display: block !important;
-  }
+.organic-shape-3 {
+  border-radius: 40% 60% 40% 60% / 70% 30% 70% 30%;
 }
 
-.print-only {
-  display: none;
+.organic-shape-4 {
+  border-radius: 55% 45% 55% 45% / 45% 55% 45% 55%;
 }
 
-/* Animation utilities - slower for contemplative feel */
+.organic-pill {
+  border-radius: 2.5rem 2rem 2.8rem 2.2rem;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.65);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.01),
+    0 2px 4px -1px rgba(0, 0, 0, 0.01),
+    0 10px 40px -10px rgba(74, 103, 97, 0.05);
+}
+
+.glass-panel-dark {
+  background: rgba(44, 51, 51, 0.85);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.3);
+}
+
+/* Organic Shapes */
+.rounded-super {
+  border-radius: var(--radius-lg);
+}
+
+/* Animation utilities */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
 
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes pulse-soft {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.7;
   }
 }
 
 @keyframes breathe {
-
-  0%,
-  100% {
+  0% {
     transform: scale(1);
     opacity: 0.8;
   }
 
-  50% {
+  40% {
     transform: scale(1.15);
     opacity: 1;
   }
+
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
 }
 
-@keyframes gentle-float {
+@keyframes float {
 
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateY(0px);
   }
 
   50% {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-.animate-slide-in {
-  animation: slideIn 0.5s ease-out forwards;
-}
-
-.animate-pulse-soft {
-  animation: pulse-soft 3s ease-in-out infinite;
+  animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 .animate-breathe {
-  animation: breathe 4s ease-in-out infinite;
+  animation: breathe 6s ease-in-out infinite;
 }
 
 .animate-float {
-  animation: gentle-float 3s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite;
 }
 
-/* Custom scrollbar - earth tones */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-warm);
-  border-radius: 4px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-clay);
-  border-radius: 4px;
+  background: rgba(74, 103, 97, 0.2);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-stone);
+  background: rgba(74, 103, 97, 0.4);
 }
 
-/* Utility classes for earth tone theme */
-.bg-earth-cream {
-  background-color: var(--color-bg-cream);
-}
-
-.bg-earth-warm {
-  background-color: var(--color-bg-warm);
-}
-
-.bg-earth-sage {
-  background-color: var(--color-sage);
-}
-
-.bg-earth-terracotta {
-  background-color: var(--color-terracotta);
-}
-
-.bg-earth-clay {
-  background-color: var(--color-clay);
-}
-
-.text-earth-primary {
-  color: var(--color-text-primary);
-}
-
-.text-earth-secondary {
-  color: var(--color-text-secondary);
-}
-
-.text-earth-muted {
-  color: var(--color-text-muted);
-}
-
-/* Card styles with soft shadows */
-.card-calm {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(156, 175, 136, 0.2);
-  box-shadow: 0 4px 20px rgba(139, 129, 120, 0.08);
-  border-radius: 16px;
-}
-
-/* Button transitions - slower and smoother */
+/* Button Reset/Base */
 button,
 a {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Gentle hover states */
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(139, 129, 120, 0.12);
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--color-sage);
+  outline-offset: 2px;
+  border-radius: 4px;
 }

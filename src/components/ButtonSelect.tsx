@@ -55,22 +55,22 @@ export function ButtonSelect({
                         onChange={(e) => setCustomValue(e.target.value)}
                         onKeyDown={handleKeyDown}
                         placeholder={placeholder}
-                        className="flex-1 p-3 rounded-xl bg-white border border-[var(--color-clay)] text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-sage)] transition-all"
+                        className="flex-1 p-4 organic-pill bg-white/50 border border-[var(--color-clay)] text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-sage)] transition-all shadow-sm"
                         aria-label="Custom answer input"
                     />
                     <button
                         onClick={handleCustomSubmit}
-                        className="px-4 rounded-xl bg-[var(--color-sage)] text-white hover:bg-[var(--color-sage-dark)] transition-colors min-w-[48px] min-h-[48px] flex items-center justify-center"
+                        className="w-14 h-14 organic-pill bg-[var(--color-sage)] text-white hover:bg-[var(--color-sage-dark)] transition-colors flex items-center justify-center shadow-md hover:shadow-lg"
                         aria-label="Submit custom answer"
                     >
-                        <Check size={18} />
+                        <Check size={20} />
                     </button>
                     <button
                         onClick={() => setShowOther(false)}
-                        className="px-3 rounded-xl bg-[var(--color-clay-light)] text-[var(--color-text-secondary)] hover:bg-[var(--color-clay)] transition-colors min-w-[48px] min-h-[48px] flex items-center justify-center"
+                        className="w-14 h-14 organic-pill bg-white/80 text-[var(--color-text-secondary)] hover:bg-white transition-colors flex items-center justify-center border border-[var(--color-clay)]"
                         aria-label="Cancel custom answer"
                     >
-                        <X size={18} />
+                        <X size={20} />
                     </button>
                 </div>
             </div>
@@ -79,7 +79,7 @@ export function ButtonSelect({
 
     return (
         <div
-            className={`grid gap-2 ${columns === 1 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}
+            className={`grid gap-3 ${columns === 1 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}
             role="group"
             aria-label="Select an option"
         >
@@ -88,9 +88,9 @@ export function ButtonSelect({
                     key={option}
                     onClick={() => handleSelect(option)}
                     aria-pressed={value === option}
-                    className={`p-3 rounded-xl text-left text-sm transition-all min-h-[48px] ${value === option
-                        ? 'bg-[var(--color-sage)]/15 border-2 border-[var(--color-sage)] text-[var(--color-text-primary)] shadow-sm'
-                        : 'bg-white/80 border border-[var(--color-clay-light)] text-[var(--color-text-secondary)] hover:bg-white hover:border-[var(--color-clay)]'
+                    className={`p-4 organic-pill text-left text-sm transition-all min-h-[56px] flex items-center ${value === option
+                        ? 'bg-[var(--color-sage)] text-white shadow-md'
+                        : 'bg-white/60 border border-[var(--color-bg-stone)] text-[var(--color-text-secondary)] hover:bg-white hover:border-[var(--color-clay)] hover:shadow-sm'
                         }`}
                 >
                     {option}
@@ -98,9 +98,9 @@ export function ButtonSelect({
             ))}
             <button
                 onClick={handleOther}
-                className={`p-3 rounded-xl text-sm transition-all flex items-center justify-center gap-2 min-h-[48px] ${isCustom
-                    ? 'bg-[var(--color-sage)]/15 border-2 border-[var(--color-sage)] col-span-full text-[var(--color-text-primary)] shadow-sm'
-                    : 'bg-white/50 border border-dashed border-[var(--color-clay)] text-[var(--color-text-muted)] hover:bg-white/80 hover:border-[var(--color-sage)]'
+                className={`p-4 organic-pill text-sm transition-all flex items-center justify-center gap-2 min-h-[56px] ${isCustom
+                    ? 'bg-[var(--color-sage)] text-white shadow-md col-span-full'
+                    : 'bg-white/40 border border-dashed border-[var(--color-text-muted)] text-[var(--color-text-muted)] hover:bg-white/80 hover:border-[var(--color-sage)] hover:text-[var(--color-sage)]'
                     }`}
                 aria-label={isCustom ? `Custom answer: ${value}` : "Enter custom answer"}
             >
@@ -115,3 +115,4 @@ export function ButtonSelect({
         </div>
     );
 }
+
