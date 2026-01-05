@@ -19,46 +19,50 @@ export function BreathingExercise({ onComplete, onSkip }: BreathingExerciseProps
         }
     };
 
-    const getPhaseSeconds = () => {
-        switch (phase) {
-            case 'inhale': return 4;
-            case 'hold': return 4;
-            case 'exhale': return 6;
-        }
-    };
-
-    const advancePhase = useCallback(() => {
+    const getNextPhaseInfo = useCallback(() => {
         if (phase === 'inhale') {
-            setPhase('hold');
-            setSecondsLeft(4);
-        } else if (phase === 'hold') {
-            setPhase('exhale');
-            setSecondsLeft(6);
-        } else {
-            const newCycle = cycle + 1;
-            if (newCycle >= totalCycles) {
-                onComplete();
-            } else {
-                setCycle(newCycle);
-                setPhase('inhale');
-                setSecondsLeft(4);
-            }
+            return { phase: 'hold' as const, duration: 4, cycle };
         }
-    }, [phase, cycle, onComplete]);
+
+        if (phase === 'hold') {
+            return { phase: 'exhale' as const, duration: 6, cycle };
+        }
+
+        const newCycle = cycle + 1;
+
+        if (newCycle >= totalCycles) {
+            return { complete: true as const };
+        }
+
+        return { phase: 'inhale' as const, duration: 4, cycle: newCycle };
+    }, [phase, cycle]);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setSecondsLeft(prev => {
-                if (prev <= 1) {
-                    advancePhase();
-                    return getPhaseSeconds();
+                if (prev > 1) {
+                    return prev - 1;
                 }
-                return prev - 1;
+
+                const nextPhaseInfo = getNextPhaseInfo();
+
+                if ('complete' in nextPhaseInfo) {
+                    clearInterval(timer);
+                    onComplete();
+                    return 0;
+                }
+
+                if (nextPhaseInfo.cycle !== cycle) {
+                    setCycle(nextPhaseInfo.cycle);
+                }
+
+                setPhase(nextPhaseInfo.phase);
+                return nextPhaseInfo.duration;
             });
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [advancePhase]);
+    }, [getNextPhaseInfo, onComplete, cycle]);
 
     const circleScale = phase === 'inhale' ? 'scale-110' : phase === 'exhale' ? 'scale-90' : 'scale-100';
 
