@@ -1,119 +1,240 @@
-import type { Journey, JourneyResponses } from '../types';
+// =============================================================================
+// STORAGE SERVICE FOR SELF-AWARENESS APP
+// =============================================================================
 
+import type {
+    CheckIn,
+    UserPreferences,
+    UserValues,
+    Pattern,
+    ModuleProgress,
+    WeeklyInsight,
+    BaselineSnapshot,
+} from '../types';
+
+// Storage keys
 const STORAGE_KEYS = {
-    CURRENT_JOURNEY: 'five-rules-current-journey',
-    JOURNEY_HISTORY: 'five-rules-journey-history',
-    ONBOARDING_COMPLETED: 'five-rules-onboarding-completed',
-    PREFERENCES: 'five-rules-preferences'
+    CHECK_INS: 'awareness-check-ins',
+    PREFERENCES: 'awareness-preferences',
+    USER_VALUES: 'awareness-values',
+    PATTERNS: 'awareness-patterns',
+    MODULE_PROGRESS: 'awareness-progress',
+    WEEKLY_INSIGHTS: 'awareness-weekly',
+    ONBOARDING_COMPLETED: 'awareness-onboarding-completed',
+    BASELINE_SNAPSHOT: 'awareness-baseline',
 } as const;
 
-const SCHEMA_VERSION = 1;
+// =============================================================================
+// ID GENERATION
+// =============================================================================
 
-function generateId(): string {
-    return `journey-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+export function generateId(prefix: string = 'item'): string {
+    return `${prefix}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
-function sortJourneysByRecency(journeys: Journey[]): Journey[] {
-    const getComparableDate = (journey: Journey) =>
-        new Date(journey.completedAt ?? journey.lastUpdatedAt ?? journey.startedAt).getTime();
+// =============================================================================
+// CHECK-INS
+// =============================================================================
 
-    const getNumericId = (id: string): number | null => {
-        const numericPart = id.match(/journey-(\d+)/)?.[1];
-        return numericPart ? Number.parseInt(numericPart, 10) : null;
-    };
-
-    return [...journeys].sort((a, b) => {
-        const dateDiff = getComparableDate(b) - getComparableDate(a);
-        if (dateDiff !== 0) {
-            return dateDiff;
-        }
-
-        const idA = getNumericId(a.id);
-        const idB = getNumericId(b.id);
-
-        if (idA !== null && idB !== null && idA !== idB) {
-            return idB - idA;
-        }
-
-        return b.id.localeCompare(a.id);
-    });
-}
-
-export function createEmptyResponses(): JourneyResponses {
-    return {
-        rule1: { trigger: '', trait: '', mirror: '', instance: '' },
-        rule2: { event: '', why1: '', why2: '', why3: '', conclusion: '' },
-        rule3: { label: '', fear: '', integration: '' },
-        rule4: { values: ['', '', '', '', ''], sources: ['', '', '', '', ''], decisions: ['', '', '', '', ''] },
-        rule5: { event: '', judgment: '', neutral: '', acceptance: '' }
-    };
-}
-
-export function createNewJourney(): Journey {
-    return {
-        id: generateId(),
-        version: SCHEMA_VERSION,
-        responses: createEmptyResponses(),
-        completedRules: [],
-        startedAt: new Date().toISOString(),
-        lastUpdatedAt: new Date().toISOString(),
-        completedAt: null
-    };
-}
-
-export function saveCurrentJourney(journey: Journey): void {
+export function saveCheckIn(checkIn: CheckIn): void {
     try {
-        const updatedJourney = {
-            ...journey,
-            lastUpdatedAt: new Date().toISOString()
-        };
-        localStorage.setItem(STORAGE_KEYS.CURRENT_JOURNEY, JSON.stringify(updatedJourney));
+        const existing = getCheckIns();
+        const updated = [checkIn, ...existing];
+        localStorage.setItem(STORAGE_KEYS.CHECK_INS, JSON.stringify(updated));
     } catch (error) {
-        console.error('Failed to save journey:', error);
+        console.error('Failed to save check-in:', error);
     }
 }
 
-export function loadCurrentJourney(): Journey | null {
+export function getCheckIns(): CheckIn[] {
     try {
-        const data = localStorage.getItem(STORAGE_KEYS.CURRENT_JOURNEY);
-        if (!data) return null;
-        return JSON.parse(data) as Journey;
+        const data = localStorage.getItem(STORAGE_KEYS.CHECK_INS);
+        return data ? JSON.parse(data) : [];
     } catch (error) {
-        console.error('Failed to load journey:', error);
+        console.error('Failed to load check-ins:', error);
+        return [];
+    }
+}
+
+export function getCheckInsForDateRange(startDate: Date, endDate: Date): CheckIn[] {
+    const checkIns = getCheckIns();
+    return checkIns.filter((ci) => {
+        const date = new Date(ci.timestamp);
+        return date >= startDate && date <= endDate;
+    });
+}
+
+export function getCheckInsForLastDays(days: number): CheckIn[] {
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+    return getCheckInsForDateRange(startDate, endDate);
+}
+
+export function getTodaysCheckIn(): CheckIn | null {
+    const checkIns = getCheckIns();
+    const today = new Date().toDateString();
+    return checkIns.find((ci) => new Date(ci.timestamp).toDateString() === today) ?? null;
+}
+
+export function deleteCheckIn(id: string): void {
+    try {
+        const checkIns = getCheckIns().filter((ci) => ci.id !== id);
+        localStorage.setItem(STORAGE_KEYS.CHECK_INS, JSON.stringify(checkIns));
+    } catch (error) {
+        console.error('Failed to delete check-in:', error);
+    }
+}
+
+// =============================================================================
+// USER PREFERENCES
+// =============================================================================
+
+export function getDefaultPreferences(): UserPreferences {
+    return {
+        goal: 'understand-moods',
+        reminderTime: '09:00',
+        tone: 'gentle',
+        depth: 'quick',
+        privacy: 'local',
+        reducedMotion: false,
+    };
+}
+
+export function savePreferences(preferences: UserPreferences): void {
+    try {
+        localStorage.setItem(STORAGE_KEYS.PREFERENCES, JSON.stringify(preferences));
+    } catch (error) {
+        console.error('Failed to save preferences:', error);
+    }
+}
+
+export function getPreferences(): UserPreferences | null {
+    try {
+        const data = localStorage.getItem(STORAGE_KEYS.PREFERENCES);
+        return data ? JSON.parse(data) : null;
+    } catch (error) {
+        console.error('Failed to load preferences:', error);
         return null;
     }
 }
 
-export function archiveJourney(journey: Journey): void {
+// =============================================================================
+// USER VALUES
+// =============================================================================
+
+export function saveUserValues(values: UserValues): void {
     try {
-        const completedJourney = {
-            ...journey,
-            completedAt: new Date().toISOString()
-        };
-
-        const history = sortJourneysByRecency(getJourneyHistory());
-        const updatedHistory = [completedJourney, ...history].slice(0, 10);
-
-        // Keep only last 10 journeys
-        localStorage.setItem(STORAGE_KEYS.JOURNEY_HISTORY, JSON.stringify(updatedHistory));
-
-        // Clear current journey
-        localStorage.removeItem(STORAGE_KEYS.CURRENT_JOURNEY);
+        localStorage.setItem(STORAGE_KEYS.USER_VALUES, JSON.stringify(values));
     } catch (error) {
-        console.error('Failed to archive journey:', error);
+        console.error('Failed to save values:', error);
     }
 }
 
-export function getJourneyHistory(): Journey[] {
+export function getUserValues(): UserValues | null {
     try {
-        const data = localStorage.getItem(STORAGE_KEYS.JOURNEY_HISTORY);
-        if (!data) return [];
-        return JSON.parse(data) as Journey[];
+        const data = localStorage.getItem(STORAGE_KEYS.USER_VALUES);
+        return data ? JSON.parse(data) : null;
     } catch (error) {
-        console.error('Failed to load journey history:', error);
+        console.error('Failed to load values:', error);
+        return null;
+    }
+}
+
+// =============================================================================
+// PATTERNS
+// =============================================================================
+
+export function savePatterns(patterns: Pattern[]): void {
+    try {
+        localStorage.setItem(STORAGE_KEYS.PATTERNS, JSON.stringify(patterns));
+    } catch (error) {
+        console.error('Failed to save patterns:', error);
+    }
+}
+
+export function getPatterns(): Pattern[] {
+    try {
+        const data = localStorage.getItem(STORAGE_KEYS.PATTERNS);
+        return data ? JSON.parse(data) : [];
+    } catch (error) {
+        console.error('Failed to load patterns:', error);
         return [];
     }
 }
+
+export function addPattern(pattern: Pattern): void {
+    const patterns = getPatterns();
+    patterns.push(pattern);
+    savePatterns(patterns);
+}
+
+export function markPatternTested(patternId: string): void {
+    const patterns = getPatterns().map((p) =>
+        p.id === patternId ? { ...p, tested: true } : p
+    );
+    savePatterns(patterns);
+}
+
+// =============================================================================
+// MODULE PROGRESS
+// =============================================================================
+
+export function getDefaultProgress(): ModuleProgress {
+    return {
+        emotion: { level: 1, lessonsCompleted: 0, practicesCompleted: 0 },
+        thought: { level: 1, lessonsCompleted: 0, practicesCompleted: 0 },
+        behaviour: { level: 1, lessonsCompleted: 0, practicesCompleted: 0 },
+        values: { level: 1, lessonsCompleted: 0, practicesCompleted: 0 },
+        blindSpots: { level: 1, lessonsCompleted: 0, practicesCompleted: 0 },
+    };
+}
+
+export function saveModuleProgress(progress: ModuleProgress): void {
+    try {
+        localStorage.setItem(STORAGE_KEYS.MODULE_PROGRESS, JSON.stringify(progress));
+    } catch (error) {
+        console.error('Failed to save progress:', error);
+    }
+}
+
+export function getModuleProgress(): ModuleProgress {
+    try {
+        const data = localStorage.getItem(STORAGE_KEYS.MODULE_PROGRESS);
+        return data ? JSON.parse(data) : getDefaultProgress();
+    } catch (error) {
+        console.error('Failed to load progress:', error);
+        return getDefaultProgress();
+    }
+}
+
+// =============================================================================
+// WEEKLY INSIGHTS
+// =============================================================================
+
+export function saveWeeklyInsight(insight: WeeklyInsight): void {
+    try {
+        const existing = getWeeklyInsights();
+        const updated = [insight, ...existing].slice(0, 12); // Keep last 12 weeks
+        localStorage.setItem(STORAGE_KEYS.WEEKLY_INSIGHTS, JSON.stringify(updated));
+    } catch (error) {
+        console.error('Failed to save weekly insight:', error);
+    }
+}
+
+export function getWeeklyInsights(): WeeklyInsight[] {
+    try {
+        const data = localStorage.getItem(STORAGE_KEYS.WEEKLY_INSIGHTS);
+        return data ? JSON.parse(data) : [];
+    } catch (error) {
+        console.error('Failed to load weekly insights:', error);
+        return [];
+    }
+}
+
+// =============================================================================
+// ONBOARDING
+// =============================================================================
 
 export function hasCompletedOnboarding(): boolean {
     try {
@@ -131,9 +252,35 @@ export function setOnboardingCompleted(completed: boolean): void {
     }
 }
 
+// =============================================================================
+// BASELINE SNAPSHOT
+// =============================================================================
+
+export function saveBaselineSnapshot(snapshot: BaselineSnapshot): void {
+    try {
+        localStorage.setItem(STORAGE_KEYS.BASELINE_SNAPSHOT, JSON.stringify(snapshot));
+    } catch (error) {
+        console.error('Failed to save baseline snapshot:', error);
+    }
+}
+
+export function getBaselineSnapshot(): BaselineSnapshot | null {
+    try {
+        const data = localStorage.getItem(STORAGE_KEYS.BASELINE_SNAPSHOT);
+        return data ? JSON.parse(data) : null;
+    } catch (error) {
+        console.error('Failed to load baseline snapshot:', error);
+        return null;
+    }
+}
+
+// =============================================================================
+// DATA CLEARANCE
+// =============================================================================
+
 export function clearAllData(): void {
     try {
-        Object.values(STORAGE_KEYS).forEach(key => {
+        Object.values(STORAGE_KEYS).forEach((key) => {
             localStorage.removeItem(key);
         });
     } catch (error) {
@@ -141,101 +288,142 @@ export function clearAllData(): void {
     }
 }
 
-export function exportJourneyAsText(journey: Journey): string {
-    const { responses } = journey;
-    const date = new Date(journey.startedAt).toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    });
+// =============================================================================
+// ANALYTICS HELPERS
+// =============================================================================
 
-    let text = `THE 5 RULES - MY REFLECTIONS\n`;
-    text += `Journey started: ${date}\n`;
-    text += `${'='.repeat(40)}\n\n`;
-
-    if (responses.rule1.trigger) {
-        text += `RULE 1: CONFRONT YOUR SHADOW\n`;
-        text += `-`.repeat(30) + `\n`;
-        text += `Trigger: ${responses.rule1.trigger}\n`;
-        text += `Trait that bothers me: ${responses.rule1.trait}\n`;
-        text += `Mirror insight: ${responses.rule1.mirror}\n`;
-        text += `When I show this: ${responses.rule1.instance}\n\n`;
-    }
-
-    if (responses.rule2.event) {
-        text += `RULE 2: MAKE THE UNCONSCIOUS CONSCIOUS\n`;
-        text += `-`.repeat(30) + `\n`;
-        text += `Event: ${responses.rule2.event}\n`;
-        text += `→ ${responses.rule2.why1}\n`;
-        text += `→ ${responses.rule2.why2}\n`;
-        text += `→ ${responses.rule2.why3}\n`;
-        text += `Insight: ${responses.rule2.conclusion}\n\n`;
-    }
-
-    if (responses.rule3.label) {
-        text += `RULE 3: INTEGRATE YOUR OPPOSITES\n`;
-        text += `-`.repeat(30) + `\n`;
-        text += `Identity: ${responses.rule3.label}\n`;
-        text += `Fear: ${responses.rule3.fear}\n`;
-        text += `Integration: ${responses.rule3.integration}\n\n`;
-    }
-
-    if (responses.rule4.values.some(v => v)) {
-        text += `RULE 4: FOLLOW YOUR OWN PATTERN\n`;
-        text += `-`.repeat(30) + `\n`;
-        responses.rule4.values.forEach((value, i) => {
-            if (value) {
-                text += `• ${value}\n`;
-                text += `  Source: ${responses.rule4.sources[i] || 'Unknown'}\n`;
-                text += `  Decision: ${responses.rule4.decisions[i] || 'Undecided'}\n`;
-            }
-        });
-        text += `\n`;
-    }
-
-    if (responses.rule5.event) {
-        text += `RULE 5: ACCEPT THE WHOLENESS OF LIFE\n`;
-        text += `-`.repeat(30) + `\n`;
-        text += `Event: ${responses.rule5.event}\n`;
-        text += `Story I told: ${responses.rule5.judgment}\n`;
-        text += `Neutral fact: ${responses.rule5.neutral}\n`;
-        text += `Acceptance: ${responses.rule5.acceptance}\n\n`;
-    }
-
-    text += `${'='.repeat(40)}\n`;
-    text += `Generated by The 5 Rules Workbook\n`;
-
-    return text;
+interface FrequencyCount {
+    item: string;
+    count: number;
 }
 
-export function identifyThemes(journey: Journey): string[] {
-    const { responses } = journey;
-    const themes: string[] = [];
+export function getEmotionFrequency(checkIns: CheckIn[]): FrequencyCount[] {
+    const counts: Record<string, number> = {};
+    checkIns.forEach((ci) => {
+        const emotion = ci.emotion.primary;
+        counts[emotion] = (counts[emotion] || 0) + 1;
+    });
+    return Object.entries(counts)
+        .map(([item, count]) => ({ item, count }))
+        .sort((a, b) => b.count - a.count);
+}
 
-    // Analyze responses to identify recurring themes
-    const allText = [
-        responses.rule1.mirror,
-        responses.rule2.why2,
-        responses.rule2.why3,
-        responses.rule2.conclusion,
-        responses.rule3.fear,
-    ].join(' ').toLowerCase();
+export function getThoughtTagFrequency(checkIns: CheckIn[]): FrequencyCount[] {
+    const counts: Record<string, number> = {};
+    checkIns.forEach((ci) => {
+        ci.thoughtTags.forEach((tag) => {
+            counts[tag] = (counts[tag] || 0) + 1;
+        });
+    });
+    return Object.entries(counts)
+        .map(([item, count]) => ({ item, count }))
+        .sort((a, b) => b.count - a.count);
+}
 
-    if (allText.includes('control') || allText.includes('safety') || allText.includes('chaos')) {
-        themes.push('Control & Safety');
-    }
-    if (allText.includes('belong') || allText.includes('reject') || allText.includes('abandon')) {
-        themes.push('Belonging & Connection');
-    }
-    if (allText.includes('worth') || allText.includes('enough') || allText.includes('perfect')) {
-        themes.push('Self-Worth & Validation');
-    }
-    if (allText.includes('seen') || allText.includes('invisible') || allText.includes('matter')) {
-        themes.push('Being Seen & Mattering');
-    }
-    if (allText.includes('weak') || allText.includes('strong') || allText.includes('vulnerable')) {
-        themes.push('Strength & Vulnerability');
+export function getBehaviourFrequency(checkIns: CheckIn[]): FrequencyCount[] {
+    const counts: Record<string, number> = {};
+    checkIns.forEach((ci) => {
+        if (ci.behaviourAction) {
+            counts[ci.behaviourAction] = (counts[ci.behaviourAction] || 0) + 1;
+        }
+    });
+    return Object.entries(counts)
+        .map(([item, count]) => ({ item, count }))
+        .sort((a, b) => b.count - a.count);
+}
+
+export function getValueAlignmentScore(checkIns: CheckIn[], userValues: UserValues | null): number {
+    if (!userValues || userValues.topValues.length === 0 || checkIns.length === 0) {
+        return 0;
     }
 
-    return themes.length > 0 ? themes : ['Personal Growth'];
+    const alignedCount = checkIns.filter((ci) =>
+        userValues.topValues.includes(ci.value)
+    ).length;
+
+    return Math.round((alignedCount / checkIns.length) * 100);
+}
+
+// =============================================================================
+// PATTERN DETECTION (Simple rule-based for MVP)
+// =============================================================================
+
+export function detectPatterns(checkIns: CheckIn[]): Pattern[] {
+    const patterns: Pattern[] = [];
+    if (checkIns.length < 3) return patterns;
+
+    // Detect emotion-behaviour chains
+    const emotionBehaviourMap: Record<string, Record<string, number>> = {};
+    checkIns.forEach((ci) => {
+        const emotion = ci.emotion.primary;
+        const behaviour = ci.behaviourAction;
+        if (!emotionBehaviourMap[emotion]) {
+            emotionBehaviourMap[emotion] = {};
+        }
+        emotionBehaviourMap[emotion][behaviour] = (emotionBehaviourMap[emotion][behaviour] || 0) + 1;
+    });
+
+    Object.entries(emotionBehaviourMap).forEach(([emotion, behaviours]) => {
+        Object.entries(behaviours).forEach(([behaviour, count]) => {
+            if (count >= 2) {
+                patterns.push({
+                    id: generateId('pattern'),
+                    type: 'emotion-chain',
+                    description: `When you feel ${emotion}, you tend to ${behaviour}`,
+                    hypothesis: `When you feel ${emotion} → you ${behaviour}`,
+                    frequency: count,
+                    lastSeen: new Date().toISOString(),
+                    tested: false,
+                });
+            }
+        });
+    });
+
+    // Detect thought-behaviour patterns
+    const tagBehaviourMap: Record<string, Record<string, number>> = {};
+    checkIns.forEach((ci) => {
+        ci.thoughtTags.forEach((tag) => {
+            const behaviour = ci.behaviourAction;
+            if (!tagBehaviourMap[tag]) {
+                tagBehaviourMap[tag] = {};
+            }
+            tagBehaviourMap[tag][behaviour] = (tagBehaviourMap[tag][behaviour] || 0) + 1;
+        });
+    });
+
+    Object.entries(tagBehaviourMap).forEach(([tag, behaviours]) => {
+        Object.entries(behaviours).forEach(([behaviour, count]) => {
+            if (count >= 2) {
+                patterns.push({
+                    id: generateId('pattern'),
+                    type: 'thought-behaviour',
+                    description: `When you're ${tag}, you tend to ${behaviour}`,
+                    hypothesis: `${tag} thinking → ${behaviour}`,
+                    frequency: count,
+                    lastSeen: new Date().toISOString(),
+                    tested: false,
+                });
+            }
+        });
+    });
+
+    return patterns;
+}
+
+// =============================================================================
+// EXPORT DATA
+// =============================================================================
+
+export function exportAllData(): string {
+    const data = {
+        checkIns: getCheckIns(),
+        preferences: getPreferences(),
+        userValues: getUserValues(),
+        patterns: getPatterns(),
+        moduleProgress: getModuleProgress(),
+        weeklyInsights: getWeeklyInsights(),
+        baselineSnapshot: getBaselineSnapshot(),
+        exportedAt: new Date().toISOString(),
+    };
+    return JSON.stringify(data, null, 2);
 }
