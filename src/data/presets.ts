@@ -68,7 +68,7 @@ export const presets = {
             "Chaos feels dangerous",
             "Mistakes mean I'm flawed",
             "Being seen means I exist",
-            "Criticism feels like threat"
+            "Criticism feels like a threat"
         ],
         why3: [
             "As a child, chaos meant danger",
