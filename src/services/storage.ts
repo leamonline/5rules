@@ -13,6 +13,32 @@ function generateId(): string {
     return `journey-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
+function sortJourneysByRecency(journeys: Journey[]): Journey[] {
+    const getComparableDate = (journey: Journey) =>
+        new Date(journey.completedAt ?? journey.lastUpdatedAt ?? journey.startedAt).getTime();
+
+    const getNumericId = (id: string): number | null => {
+        const numericPart = id.match(/journey-(\d+)/)?.[1];
+        return numericPart ? Number.parseInt(numericPart, 10) : null;
+    };
+
+    return [...journeys].sort((a, b) => {
+        const dateDiff = getComparableDate(b) - getComparableDate(a);
+        if (dateDiff !== 0) {
+            return dateDiff;
+        }
+
+        const idA = getNumericId(a.id);
+        const idB = getNumericId(b.id);
+
+        if (idA !== null && idB !== null && idA !== idB) {
+            return idB - idA;
+        }
+
+        return b.id.localeCompare(a.id);
+    });
+}
+
 export function createEmptyResponses(): JourneyResponses {
     return {
         rule1: { trigger: '', trait: '', mirror: '', instance: '' },
@@ -65,12 +91,11 @@ export function archiveJourney(journey: Journey): void {
             completedAt: new Date().toISOString()
         };
 
-        const history = getJourneyHistory();
-        history.unshift(completedJourney);
+        const history = sortJourneysByRecency(getJourneyHistory());
+        const updatedHistory = [completedJourney, ...history].slice(0, 10);
 
         // Keep only last 10 journeys
-        const trimmedHistory = history.slice(0, 10);
-        localStorage.setItem(STORAGE_KEYS.JOURNEY_HISTORY, JSON.stringify(trimmedHistory));
+        localStorage.setItem(STORAGE_KEYS.JOURNEY_HISTORY, JSON.stringify(updatedHistory));
 
         // Clear current journey
         localStorage.removeItem(STORAGE_KEYS.CURRENT_JOURNEY);
